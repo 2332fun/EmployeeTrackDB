@@ -71,14 +71,14 @@ function employeeOrBack(){
 
 function viewDepartments(){
     db.findDepartments()
-    .then(([departments]) => {
+    .then((departments) => {
         console.table(departments);
         directory();
     })
 }
 function viewEmployees() {
     db.findEmployees()
-    .then(([employees]) => {
+    .then((employees) => {
         console.table(employees);
         employeeOrBack();
     })
@@ -90,7 +90,8 @@ function addEmployee() {
 }
 
 function quit() {
-    console.log("Quit function code will be implemented later.");
+    console.log("Goodbye!");
+    process.exit(1);
 }
 
 directory();
