@@ -17,6 +17,14 @@ class DB {
 
     }
 
+    findEmployees(){
+        return new Promise((resolve, reject) => {
+            this.connection.query('SELECT * FROM employee', (error, data) => {
+                resolve(data);
+            })
+        })
+    }
+
 }
 
 module.exports = new DB(connection);
