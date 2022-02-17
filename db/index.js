@@ -1,12 +1,10 @@
 const connection = require('./connection');
 
-//CLASS
+//CLASS for database
 class DB {
     constructor (connection){
         this.connection = connection;
     }
-
-    //build query for each database call
 
     findDepartments(){
         return new Promise((resolve, reject) => {
@@ -17,11 +15,15 @@ class DB {
 
     }
 
-    findEmployees(){
+    //Presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to.
+
+    findEmployees() {
         return new Promise((resolve, reject) => {
-            this.connection.query('SELECT * FROM employee', (error, data) => {
-                resolve(data);
-            })
+            this.connection.query('SELECT employee.id, employee.first_name, employee.last_name, emp_role.title, emp_role.salary, department.dep_name AS department, manager.first_name AS manager_first, manager.last_name AS manager_last FROM employee LEFT JOIN emp_role ON employee.role_id = emp_role.id LEFT JOIN department ON emp_role.department_id = department.id LEFT JOIN employee manager ON manager.id = employee.manager_id',
+                (error, data) => {
+                    resolve(data);
+                }
+            )
         })
     }
 

@@ -5,6 +5,8 @@ const DB = require('./db');
 const db = require('./db');
 const { black } = require('color-name');
 
+//THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+
 function directory () {
     inquirer.prompt([
         {
@@ -13,12 +15,16 @@ function directory () {
             message: 'What would you like to do?',
             choices: [
                 {
-                    name: 'View Employees',
-                    value: 'view_employees'
-                },
-                {
                     name: 'View Departments',
                     value: 'view_departments'
+                },
+                // {
+                //     name: 'View Roles',
+                //     value: 'view_roles'
+                // },
+                {
+                    name: 'View Employees',
+                    value: 'view_employees'
                 },
                 {
                     name: 'Quit',
