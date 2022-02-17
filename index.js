@@ -91,8 +91,65 @@ function viewEmployees() {
 }
 
 function addEmployee() {
-    console.log("Add Employee function code will be implemented later.");
-    directory();
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addEmployeeFirstName',
+            message: 'What is the first name of the Employee?'
+        },
+        {
+            type: 'input',
+            name: 'addEmployeeLastName',
+            message: 'What is the last name of the Employee?'
+        }
+    ]).then((answers) => {
+        let first_name = answers.addEmployeeFirstName
+        let last_name = answers.addEmployeeLastName
+        db.findRoles()
+            .then((roles) => {
+                const roleOptions = roles.map(({id, title}) => ({
+                    name: title,
+                    value: id
+                }))
+           
+        inquirer.prompt([
+        {
+            type: 'list',
+            name: 'addEmployeeRole',
+            message: 'What is the role of the Employee?',
+            choices: roleOptions
+        }
+        ]).then((answers) => {
+            let roleID = answers.addEmployeeRole
+            db.findEmployees()
+                .then((employees) => {
+                    const managerOptions = employees.map(({id, first_name, last_name}) => ({
+                        name: first_name + last_name,
+                        value: id
+                    }))
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'addEmployeeManager',
+                message: 'Who is the manager of the Employee?',
+                choices: managerOptions
+            }
+        ]).then((answers) => {
+            let employee = {
+                manager_id: answers.addEmployeeManager,
+                role_id: roleID,
+                first_name: first_name,
+                last_name: last_name
+            }
+            db.newEmployee(employee)
+        }).then(() => {
+            console.log("Added employee to the database!");
+        })
+                })
+        })
+
+    })
+    })
 }
 
 function quit() {
