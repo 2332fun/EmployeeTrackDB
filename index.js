@@ -5,9 +5,9 @@ const DB = require('./db');
 const db = require('./db');
 const { black } = require('color-name');
 
-//THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+//Presents the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
 
-function directory () {
+function directory() {
     inquirer.prompt([
         {
             type: 'list',
@@ -33,7 +33,7 @@ function directory () {
             ]
         }
     ]).then((response) => {
-        switch (response.directoryChoice){
+        switch (response.directoryChoice) {
             case 'view_employees':
                 viewEmployees();
                 break;
@@ -46,7 +46,7 @@ function directory () {
     })
 }
 
-function employeeOrBack(){
+function employeeOrBack() {
     inquirer.prompt([
         {
             type: 'list',
@@ -63,8 +63,8 @@ function employeeOrBack(){
                 }
             ]
         }
-    ]).then ((response) => {
-        switch (response.employeeOrBack){
+    ]).then((response) => {
+        switch (response.employeeOrBack) {
             case 'addEmployeeChoice':
                 addEmployee();
                 break;
@@ -75,19 +75,19 @@ function employeeOrBack(){
 };
 
 
-function viewDepartments(){
+function viewDepartments() {
     db.findDepartments()
-    .then((departments) => {
-        console.table(departments);
-        directory();
-    })
+        .then((departments) => {
+            console.table(departments);
+            directory();
+        })
 }
 function viewEmployees() {
     db.findEmployees()
-    .then((employees) => {
-        console.table(employees);
-        employeeOrBack();
-    })
+        .then((employees) => {
+            console.table(employees);
+            employeeOrBack();
+        })
 }
 
 function addEmployee() {
@@ -107,48 +107,49 @@ function addEmployee() {
         let last_name = answers.addEmployeeLastName
         db.findRoles()
             .then((roles) => {
-                const roleOptions = roles.map(({id, title}) => ({
+                const roleOptions = roles.map(({ id, title }) => ({
                     name: title,
                     value: id
                 }))
-           
-        inquirer.prompt([
-        {
-            type: 'list',
-            name: 'addEmployeeRole',
-            message: 'What is the role of the Employee?',
-            choices: roleOptions
-        }
-        ]).then((answers) => {
-            let roleID = answers.addEmployeeRole
-            db.findEmployees()
-                .then((employees) => {
-                    const managerOptions = employees.map(({id, first_name, last_name}) => ({
-                        name: first_name + last_name,
-                        value: id
-                    }))
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'addEmployeeManager',
-                message: 'Who is the manager of the Employee?',
-                choices: managerOptions
-            }
-        ]).then((answers) => {
-            let employee = {
-                manager_id: answers.addEmployeeManager,
-                role_id: roleID,
-                first_name: first_name,
-                last_name: last_name
-            }
-            db.newEmployee(employee)
-        }).then(() => {
-            console.log("Added employee to the database!");
-        })
-                })
-        })
 
-    })
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'addEmployeeRole',
+                        message: 'What is the role of the Employee?',
+                        choices: roleOptions
+                    }
+                ]).then((answers) => {
+                    let roleID = answers.addEmployeeRole
+                    db.findEmployees()
+                        .then((employees) => {
+                            const managerOptions = employees.map(({ id, first_name, last_name }) => ({
+                                name: first_name + last_name,
+                                value: id
+                            }))
+                            inquirer.prompt([
+                                {
+                                    type: 'list',
+                                    name: 'addEmployeeManager',
+                                    message: 'Who is the manager of the Employee?',
+                                    choices: managerOptions
+                                }
+                            ]).then((answers) => {
+                                let employee = {
+                                    manager_id: answers.addEmployeeManager,
+                                    role_id: roleID,
+                                    first_name: first_name,
+                                    last_name: last_name
+                                }
+                                db.newEmployee(employee)
+                            }).then(() => {
+                                console.log("Added employee to the database!");
+                                directory();
+                            })
+                        })
+                })
+
+            })
     })
 }
 

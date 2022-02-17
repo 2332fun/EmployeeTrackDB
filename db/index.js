@@ -45,7 +45,7 @@ class DB {
 
     findRoles() {
         return new Promise ((resolve, reject) => {
-            this.connection.query('SELECT emp_role.title, emp_role.salary, department.dep_name AS department LEFT JOIN department ON emp_role.department_id = department.id',
+            this.connection.query('SELECT emp_role.title, emp_role.salary, department.dep_name AS department FROM emp_role LEFT JOIN department ON emp_role.department_id = department.id',
             (error, data) => {
                 resolve(data);
             }
