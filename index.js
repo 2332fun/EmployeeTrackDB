@@ -320,17 +320,28 @@ function updateEmployee() {
                     message: 'Which employee would you like to update?',
                     choices: updateOptions
                 }
-            ]).then ((answers) => {
+            ]).then ((emp_role) => {
+                console.log(emp_role)
+                const updateRoleOptions = emp_role.map(({ id, title, salary, department_id }) => ({
+                    name: title,
+                    value: id,
+                    salary: salary,
+                    department_id: department_id
+                }))
                 let chosenEmployee = answers.updateEmployeeChoice
                 inquirer.prompt([
                     {
-                        type: 'input',
+                        type: 'list',
                         name: 'updateEmployeeRole',
-                        message: 'What is their new role?'
+                        message: 'What is their new role?',
+                        choices: updateRoleOptions
                     }
                 ]).then((answers) => {
                     let newRoleID = {
-                        role_id: answers.updateEmployeeRole
+                        first_name: chosenEmployee.first_name,
+                        role_id: answers.updateEmployeeRole,
+                        salary: salary,
+                        department_id: department_id
                     }
                     db.updateEmployee(newRoleID)
 

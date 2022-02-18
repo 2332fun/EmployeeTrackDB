@@ -80,7 +80,7 @@ class DB {
 
     updateEmployee(employee) {
         return new Promise ((resolve, reject) => {
-            this.connection.query('UPDATE employee SET ?', employee,
+            this.connection.query('UPDATE employee SET role_id = ? WHERE id = ?', employee,
             (error, data) => {
                 resolve(data);
             })
