@@ -192,22 +192,35 @@ function addRole() {
             type: 'input',
             name: 'addSalary',
             message: 'How much salary does this role make?'
-        },
-        {
-            type: 'input',
-            name: 'addRoleDep',
-            message: 'What department does this role belong to?'
         }
-    ]).then((answers) => {
-        let role = {
-            title: answers.addRole,
-            salary: answers.addSalary,
-            dep_name: answers.addRoleDep
-        }
-        db.newRole(role)
-    }).then(() => {
-        console.log("Added role to the database!");
-        directory();
+    ]).then(() => {
+        db.findRoles()
+            .then((roles) => {
+                const roleOptions = roles.map(({ id, title }) => ({
+                    name: title,
+                    value: id
+                }))
+
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'addRoleDep',
+                        message: 'What department does this role belong to?',
+                        choices: roleOptions
+                    }
+                ]).then((answers) => {
+                    let emp_role = {
+                        title: answers.addRole,
+                        salary: answers.addSalary,
+                        department_id: answers.addRoleDep
+                    }
+                    db.newRole(emp_role)
+                })
+
+            }).then(() => {
+                console.log("Added role to the database!");
+                directory();
+            })
     })
 }
 
