@@ -76,7 +76,19 @@ class DB {
         })
     }
     
+    //updates employee table
+
+    updateEmployee(employee) {
+        return new Promise ((resolve, reject) => {
+            this.connection.query('UPDATE employee SET ?', employee,
+            (error, data) => {
+                resolve(data);
+            })
+        })
+    }
 }
+
+
     //TO DO: EMPLOYEE UPDATE TABLE
     // WHEN I choose to update an employee role
     // THEN I am prompted to select an employee to update and their new role and this information is updated in the database

@@ -226,7 +226,7 @@ function addRole() {
                     console.log("Added role to the database!");
                     directory();
 
-            })
+                })
             })
     })
 }
@@ -307,13 +307,30 @@ function addEmployee() {
 }
 
 function updateEmployee() {
-    console.log("Employee update functionality code will be implemented later!")
-    //ask which employee
-    //prompt for updated answers
-    //inquirer default response
-    //property called DEFAULT
-    directory();
+    db.findEmployees()
+        .then((employees) => {
+            const updateOptions = employees.map(({ id, first_name, last_name }) => ({
+                name: first_name + last_name,
+                value: id
+            }))
+            inquirer.prompt([
+                {
+                    type: 'choice',
+                    name: 'updateEmployeeChoice',
+                    message: 'Which employee would you like to update?',
+                    choices: updateOptions
+                }
+            ]).then(() => {
+                directory();
+            })
+        })
 }
+
+//ask which employee
+//prompt for updated answers
+//inquirer default response
+//property called DEFAULT
+
 function quit() {
     console.log("Goodbye!");
     process.exit(1);
