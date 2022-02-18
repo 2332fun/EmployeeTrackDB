@@ -18,10 +18,10 @@ function directory() {
                     name: 'View Departments',
                     value: 'view_departments'
                 },
-                // {
-                //     name: 'View Roles',
-                //     value: 'view_roles'
-                // },
+                {
+                    name: 'View Roles',
+                    value: 'view_roles'
+                },
                 {
                     name: 'View Employees',
                     value: 'view_employees'
@@ -36,6 +36,9 @@ function directory() {
         switch (response.directoryChoice) {
             case 'view_employees':
                 viewEmployees();
+                break;
+            case 'view_roles':
+                viewRoles();
                 break;
             case 'view_departments':
                 viewDepartments();
@@ -74,6 +77,7 @@ function employeeOrBack() {
     })
 };
 
+// When viewing all departments, presents a formatted table showing department names and department ids
 
 function viewDepartments() {
     db.findDepartments()
@@ -82,6 +86,23 @@ function viewDepartments() {
             directory();
         })
 }
+
+// When adding a department, prompts the user to enter the name of the department and that department is added to the database
+
+// When viewing all roles, presents the job title, role id, the department that role belongs to, and the salary for that role
+
+function viewRoles() {
+    db.findRoles()
+        .then((emp_role) => {
+            console.table(emp_role);
+            directory();
+        })
+}
+
+// When adding a role, prompts the user to enter the name, salary, and department for the role and that role is added to the database
+
+// When viewing all employees, presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to.
+
 function viewEmployees() {
     db.findEmployees()
         .then((employees) => {
@@ -90,6 +111,7 @@ function viewEmployees() {
         })
 }
 
+// When adding an employee; prompts the user to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 function addEmployee() {
     inquirer.prompt([
         {

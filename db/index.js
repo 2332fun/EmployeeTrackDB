@@ -16,7 +16,7 @@ class DB {
 
     }
 
-    //Presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to.
+    //displays employee table
 
     findEmployees() {
         return new Promise((resolve, reject) => {
@@ -28,11 +28,8 @@ class DB {
         })
     }
 
-    //add employee
-    // WHEN I choose to add an employee
-    // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-    // WHEN I choose to update an employee role
-    // THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+    //adds new employee to table
+
     newEmployee(employee) {
         return new Promise ((resolve, reject) => {
             this.connection.query('INSERT INTO employee SET ?', employee,
@@ -42,6 +39,9 @@ class DB {
             )
         })
     }
+    
+    // WHEN I choose to update an employee role
+    // THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 
     findRoles() {
         return new Promise ((resolve, reject) => {
