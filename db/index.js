@@ -15,7 +15,6 @@ class DB {
                 resolve(data);
             })
         })
-
     }
 
     //displays employee table
