@@ -308,6 +308,10 @@ function addEmployee() {
 
 function updateEmployee() {
     console.log("Employee update functionality code will be implemented later!")
+    //ask which employee
+    //prompt for updated answers
+    //inquirer default response
+    //property called DEFAULT
     directory();
 }
 function quit() {
