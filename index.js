@@ -194,9 +194,9 @@ function addRole() {
             message: 'How much salary does this role make?'
         }
     ]).then(() => {
-        db.findRoles()
-            .then((roles) => {
-                const roleOptions = roles.map(({ id, title }) => ({
+        db.findDepartments()
+            .then((departments) => {
+                const departmentOptions = departments.map(({ id, title }) => ({
                     name: title,
                     value: id
                 }))
@@ -206,7 +206,7 @@ function addRole() {
                         type: 'list',
                         name: 'addRoleDep',
                         message: 'What department does this role belong to?',
-                        choices: roleOptions
+                        choices: departmentOptions
                     }
                 ]).then((answers) => {
                     let emp_role = {
@@ -215,11 +215,10 @@ function addRole() {
                         department_id: answers.addRoleDep
                     }
                     db.newRole(emp_role)
-                })
+                    console.log("Added role to the database!");
+                    directory();
 
-            }).then(() => {
-                console.log("Added role to the database!");
-                directory();
+            })
             })
     })
 }
