@@ -277,7 +277,7 @@ function addEmployee() {
                     db.findEmployees()
                         .then((employees) => {
                             const managerOptions = employees.map(({ id, first_name, last_name }) => ({
-                                name: first_name + last_name,
+                                name: first_name + ' ' + last_name,
                                 value: id
                             }))
                             inquirer.prompt([
@@ -310,17 +310,33 @@ function updateEmployee() {
     db.findEmployees()
         .then((employees) => {
             const updateOptions = employees.map(({ id, first_name, last_name }) => ({
-                name: first_name + last_name,
+                name: first_name + ' ' + last_name,
                 value: id
             }))
             inquirer.prompt([
                 {
-                    type: 'choice',
+                    type: 'list',
                     name: 'updateEmployeeChoice',
                     message: 'Which employee would you like to update?',
                     choices: updateOptions
                 }
-            ]).then(() => {
+            ]).then ((answers) => {
+                let chosenEmployee = answers.updateEmployeeChoice
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'updateEmployeeRole',
+                        message: 'What is their new role?'
+                    }
+                ]).then((answers) => {
+                    let newRoleID = {
+                        role_id: answers.updateEmployeeRole
+                    }
+                    db.updateEmployee(newRoleID)
+
+                })
+            }).then(() => {
+                console.log("Updated the employee in the database!");
                 directory();
             })
         })
