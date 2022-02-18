@@ -48,7 +48,33 @@ function directory() {
         }
     })
 }
-
+function departmentOrBack() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'departmentOrBack',
+            message: 'Would you like to add a Department?',
+            choices: [
+                {
+                    name: 'Add a Department.',
+                    value: 'addDepartmentChoice',
+                },
+                {
+                    name: 'Go back.',
+                    value: 'back'
+                }
+            ]
+        }
+    ]).then((response) => {
+        switch (response.departmentOrBack) {
+            case 'addDepartmentChoice':
+                addDepartment();
+                break;
+            case 'back':
+                directory();
+        }
+    })
+};
 function employeeOrBack() {
     inquirer.prompt([
         {
@@ -58,7 +84,7 @@ function employeeOrBack() {
             choices: [
                 {
                     name: 'Add an Employee.',
-                    value: 'addEmployeeChoice',
+                    value: 'addEmployeeChoice'
                 },
                 {
                     name: 'Go back.',
@@ -85,6 +111,24 @@ function viewDepartments() {
             console.table(departments);
             directory();
         })
+}
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addDep',
+            message: 'What department would you like to add?'
+        }
+    ]).then((answers) => {
+        let department = {
+            dep_name: answers.addDep
+        }
+        db.newDepartment(department)
+    }).then(() => {
+        console.log("Added department to the database!");
+        directory();
+    })
 }
 
 // When adding a department, prompts the user to enter the name of the department and that department is added to the database

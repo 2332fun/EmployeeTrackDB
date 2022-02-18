@@ -39,6 +39,17 @@ class DB {
             )
         })
     }
+
+    //adds new department to table
+    
+    newDepartment(department) {
+        return new Promise ((resolve, reject) => {
+            this.connection.query('INSERT INTO department SET ?', department,
+            (error, data) => {
+                resolve(data);
+            })
+        })
+    }
     
     // WHEN I choose to update an employee role
     // THEN I am prompted to select an employee to update and their new role and this information is updated in the database
