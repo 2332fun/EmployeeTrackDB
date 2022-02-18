@@ -86,11 +86,15 @@ function employeeOrBack() {
         {
             type: 'list',
             name: 'employeeOrBack',
-            message: 'Would you like to add an Employee?',
+            message: 'Would you like to add or update an Employee?',
             choices: [
                 {
                     name: 'Add an Employee.',
                     value: 'addEmployeeChoice'
+                },
+                {
+                    name: 'Update an existing Employee.',
+                    value: 'updateEmployeeChoice'
                 },
                 {
                     name: 'Go back.',
@@ -102,6 +106,9 @@ function employeeOrBack() {
         switch (response.employeeOrBack) {
             case 'addEmployeeChoice':
                 addEmployee();
+                break;
+            case 'updateEmployeeChoice':
+                updateEmployee();
                 break;
             case 'back':
                 directory();
@@ -193,14 +200,15 @@ function addRole() {
             name: 'addSalary',
             message: 'How much salary does this role make?'
         }
-    ]).then(() => {
+    ]).then((roleSalaryAnswers) => {
+        let title = roleSalaryAnswers.addRole
+        let salary = roleSalaryAnswers.addSalary
         db.findDepartments()
             .then((departments) => {
-                const departmentOptions = departments.map(({ id, title }) => ({
-                    name: title,
+                const departmentOptions = departments.map(({ id, dep_name }) => ({
+                    name: dep_name,
                     value: id
                 }))
-
                 inquirer.prompt([
                     {
                         type: 'list',
@@ -210,8 +218,8 @@ function addRole() {
                     }
                 ]).then((answers) => {
                     let emp_role = {
-                        title: answers.addRole,
-                        salary: answers.addSalary,
+                        title: title,
+                        salary: salary,
                         department_id: answers.addRoleDep
                     }
                     db.newRole(emp_role)
@@ -298,6 +306,10 @@ function addEmployee() {
     })
 }
 
+function updateEmployee() {
+    console.log("Employee update functionality code will be implemented later!")
+    directory();
+}
 function quit() {
     console.log("Goodbye!");
     process.exit(1);

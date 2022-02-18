@@ -7,6 +7,8 @@ class DB {
         this.connection = connection;
     }
 
+    //displays department table
+
     findDepartments(){
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM department', (error, data) => {
@@ -24,6 +26,18 @@ class DB {
                 (error, data) => {
                     resolve(data);
                 }
+            )
+        })
+    }
+
+    //displays roles table
+
+    findRoles() {
+        return new Promise ((resolve, reject) => {
+            this.connection.query('SELECT emp_role.title, emp_role.salary, department.dep_name AS department FROM emp_role LEFT JOIN department ON emp_role.department_id = department.id',
+            (error, data) => {
+                resolve(data);
+            }
             )
         })
     }
@@ -62,20 +76,9 @@ class DB {
         })
     }
     
-    
+}
+    //TO DO: EMPLOYEE UPDATE TABLE
     // WHEN I choose to update an employee role
     // THEN I am prompted to select an employee to update and their new role and this information is updated in the database
-
-    findRoles() {
-        return new Promise ((resolve, reject) => {
-            this.connection.query('SELECT emp_role.title, emp_role.salary, department.dep_name AS department FROM emp_role LEFT JOIN department ON emp_role.department_id = department.id',
-            (error, data) => {
-                resolve(data);
-            }
-            )
-    })
-}
-
-}
 
 module.exports = new DB(connection);
