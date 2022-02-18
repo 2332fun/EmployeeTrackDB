@@ -41,10 +41,21 @@ class DB {
     }
 
     //adds new department to table
-    
+
     newDepartment(department) {
         return new Promise ((resolve, reject) => {
             this.connection.query('INSERT INTO department SET ?', department,
+            (error, data) => {
+                resolve(data);
+            })
+        })
+    }
+
+    //adds new role to table
+
+    newRole(emp_role) {
+        return new Promise ((resolve, reject) => {
+            this.connection.query('INSERT INTO emp_role SET ?', emp_role,
             (error, data) => {
                 resolve(data);
             })

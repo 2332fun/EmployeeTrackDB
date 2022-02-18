@@ -48,6 +48,9 @@ function directory() {
         }
     })
 }
+
+// After viewing the departments, decide to either add a department or return to the directory.
+
 function departmentOrBack() {
     inquirer.prompt([
         {
@@ -75,6 +78,9 @@ function departmentOrBack() {
         }
     })
 };
+
+// After viewing the employees, decide to either add an employee or return to the directory.
+
 function employeeOrBack() {
     inquirer.prompt([
         {
@@ -103,15 +109,47 @@ function employeeOrBack() {
     })
 };
 
+// After viewing the roles, decide to either add a role or return to the directory.
+
+function roleOrBack() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'roleOrBack',
+            message: 'Would you like to add a Role?',
+            choices: [
+                {
+                    name: 'Add a Role.',
+                    value: 'addRoleChoice'
+                },
+                {
+                    name: 'Go back.',
+                    value: 'back'
+                }
+            ]
+        }
+    ]).then((response) => {
+        switch (response.roleOrBack) {
+            case 'addRoleChoice':
+                addRole();
+                break;
+            case 'back':
+                directory();
+        }
+    })
+};
+
 // When viewing all departments, presents a formatted table showing department names and department ids
 
 function viewDepartments() {
     db.findDepartments()
         .then((departments) => {
             console.table(departments);
-            directory();
+            departmentOrBack();
         })
 }
+
+// When adding a department, prompts the user to enter the name of the department and that department is added to the database
 
 function addDepartment() {
     inquirer.prompt([
@@ -131,19 +169,47 @@ function addDepartment() {
     })
 }
 
-// When adding a department, prompts the user to enter the name of the department and that department is added to the database
-
 // When viewing all roles, presents the job title, role id, the department that role belongs to, and the salary for that role
 
 function viewRoles() {
     db.findRoles()
         .then((emp_role) => {
             console.table(emp_role);
-            directory();
+            roleOrBack();
         })
 }
 
 // When adding a role, prompts the user to enter the name, salary, and department for the role and that role is added to the database
+
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'addRole',
+            message: 'What role would you like to add?'
+        },
+        {
+            type: 'input',
+            name: 'addSalary',
+            message: 'How much salary does this role make?'
+        },
+        {
+            type: 'input',
+            name: 'addRoleDep',
+            message: 'What department does this role belong to?'
+        }
+    ]).then((answers) => {
+        let role = {
+            title: answers.addRole,
+            salary: answers.addSalary,
+            dep_name: answers.addRoleDep
+        }
+        db.newRole(role)
+    }).then(() => {
+        console.log("Added role to the database!");
+        directory();
+    })
+}
 
 // When viewing all employees, presents a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to.
 
@@ -156,6 +222,7 @@ function viewEmployees() {
 }
 
 // When adding an employee; prompts the user to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+
 function addEmployee() {
     inquirer.prompt([
         {
