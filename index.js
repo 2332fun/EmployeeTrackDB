@@ -305,6 +305,8 @@ function addEmployee() {
     })
 }
 
+// When updating an employee role, prompts the user to select an employee to update their new role and this information is updated in the database.
+
 function updateEmployee() {
     db.findEmployees()
         .then((employees) => {
@@ -319,50 +321,42 @@ function updateEmployee() {
                     message: 'Which employee would you like to update?',
                     choices: updateOptions
                 }
-            ]).then ((emp_role) => {
+            ]).then((emp_role) => {
                 let empvar = {};
                 for (let i = 0; i < employees.length; i++) {
                     if (employees[i].id == emp_role.updateEmployeeChoice) {
                         empvar = employees[i]
                     }
                 }
-                // let chosenEmployee = answers.updateEmployeeChoice
                 db.findRoles()
-                .then((roles) => {
-                    const roleOptions = roles.map(({ id, title }) => ({
-                        name: title,
-                        value: id
-                    }))
-                    inquirer.prompt([
-                        {
-                            type: 'list',
-                            name: 'updateEmployeeRole',
-                            message: 'What is their new role?',
-                            choices: roleOptions
-                        }
-                    ]).then((answers) => {
-                        console.log(empvar);
-                        console.log(answers);
-                    let newRoleID = {
-                        role_id: answers.updateEmployeeRole,
-                        id: empvar.id
-                    }
-                    db.updateEmployee(newRoleID)
-                    .then(() => {
-                        console.log("Updated the employee in the database!");
-                        directory();
+                    .then((roles) => {
+                        const roleOptions = roles.map(({ id, title }) => ({
+                            name: title,
+                            value: id
+                        }))
+                        inquirer.prompt([
+                            {
+                                type: 'list',
+                                name: 'updateEmployeeRole',
+                                message: 'What is their new role?',
+                                choices: roleOptions
+                            }
+                        ]).then((answers) => {
+                            let newRoleID = {
+                                role_id: answers.updateEmployeeRole,
+                                id: empvar.id
+                            }
+                            db.updateEmployee(newRoleID)
+                                .then(() => {
+                                    console.log("Updated the employee in the database!");
+                                    directory();
+                                })
+                        })
                     })
-                })
-                })
 
             })
         })
 }
-
-//ask which employee
-//prompt for updated answers
-//inquirer default response
-//property called DEFAULT
 
 function quit() {
     console.log("Goodbye!");
@@ -370,5 +364,3 @@ function quit() {
 }
 
 directory();
-
-//UPDATE EMPLOYEE NOT ALLOWING CHOICE OF ROLE AFTER CHOOSING EMPLOYEE

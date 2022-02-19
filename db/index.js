@@ -79,7 +79,7 @@ class DB {
 
     updateEmployee(employee) {
         return new Promise ((resolve, reject) => {
-            this.connection.query('UPDATE employee SET role_id = ? WHERE id = ?', employee,
+            this.connection.query('UPDATE employee SET role_id = ? WHERE id = ?', [employee.role_id, employee.id],
             (error, data) => {
                 console.log(data);
                 resolve(data);
@@ -87,10 +87,5 @@ class DB {
         })
     }
 }
-
-
-    //TO DO: EMPLOYEE UPDATE TABLE
-    // WHEN I choose to update an employee role
-    // THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 
 module.exports = new DB(connection);
