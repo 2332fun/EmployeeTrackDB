@@ -320,34 +320,41 @@ function updateEmployee() {
                     choices: updateOptions
                 }
             ]).then ((emp_role) => {
-                console.log(emp_role)
-                const updateRoleOptions = emp_role.map(({ id, title, salary, department_id }) => ({
-                    name: title,
-                    value: id,
-                    salary: salary,
-                    department_id: department_id
-                }))
-                let chosenEmployee = answers.updateEmployeeChoice
-                inquirer.prompt([
-                    {
-                        type: 'list',
-                        name: 'updateEmployeeRole',
-                        message: 'What is their new role?',
-                        choices: updateRoleOptions
+                let empvar = {};
+                for (let i = 0; i < employees.length; i++) {
+                    if (employees[i].id == emp_role.updateEmployeeChoice) {
+                        empvar = employees[i]
                     }
-                ]).then((answers) => {
+                }
+                // let chosenEmployee = answers.updateEmployeeChoice
+                db.findRoles()
+                .then((roles) => {
+                    const roleOptions = roles.map(({ id, title }) => ({
+                        name: title,
+                        value: id
+                    }))
+                    inquirer.prompt([
+                        {
+                            type: 'list',
+                            name: 'updateEmployeeRole',
+                            message: 'What is their new role?',
+                            choices: roleOptions
+                        }
+                    ]).then((answers) => {
+                        console.log(empvar);
+                        console.log(answers);
                     let newRoleID = {
-                        first_name: chosenEmployee.first_name,
                         role_id: answers.updateEmployeeRole,
-                        salary: salary,
-                        department_id: department_id
+                        id: empvar.id
                     }
                     db.updateEmployee(newRoleID)
-
+                    .then(() => {
+                        console.log("Updated the employee in the database!");
+                        directory();
+                    })
                 })
-            }).then(() => {
-                console.log("Updated the employee in the database!");
-                directory();
+                })
+
             })
         })
 }
