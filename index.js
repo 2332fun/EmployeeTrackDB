@@ -264,7 +264,6 @@ function addEmployee() {
                     name: title,
                     value: id
                 }))
-
                 inquirer.prompt([
                     {
                         type: 'list',
@@ -365,5 +364,4 @@ function quit() {
 
 directory();
 
-//ADD EMPLOYEE NOT KEEPING NEW ROLE ID FOR DEPARTMENT
 //UPDATE EMPLOYEE NOT ALLOWING CHOICE OF ROLE AFTER CHOOSING EMPLOYEE
